@@ -1,0 +1,120 @@
+<div class="card border-0">
+    <div class="card-header" style="background-color: #ffffff;">      
+      <h1 class="text-muted text-center">Dashboard </h1>
+    </div>
+
+    <div class="container">
+        <div class="container-fluid">
+            <div class="row">
+                
+                <div class="card-body">
+                    <form ngNativeValidate [formGroup]="formularioDashboard" (ngSubmit)="enviarDatos()">
+                        <div class="row justify-content-center align-items-center g-2 mb-3">
+                            <label class="text-center">Intervalo de ventas</label>
+                            <div class="col-sm-3">  
+                                <label class="py-1">Fecha Inicial</label>        
+                                <input required type="date" class="form-control" formControlName="fechainicial" placeholder="Fecha de" >
+                            </div>    
+                            <div class="col-sm-3">  
+                                <label class="py-1">Fecha Final</label>        
+                                <input required type="date" class="form-control" formControlName="fechafinal" placeholder="Fecha a">
+                            </div>                                             
+                        </div>
+
+                        <div class="row justify-content-center align-items-center pt-1 mb-3 ">
+                            <div class="col-sm-6 text-center">
+                            <button type="submit" class="btn btn-primary shadow"><i class="fas fa-save"></i> Filtrar</button>
+                            </div>        
+                        </div>
+                                
+
+                        <div class="row">
+                            <h3 class="text-center pt-2 mb-0">Listado de Citas</h3>
+                            <div class="col-sm-12 text-end">
+                                <button (click)="DescargarAExcel()" class="btn btn-success"><i class="fas fa-download"></i></button> 
+                            </div>              
+                          <div class="table-responsive">
+                              <table class="table table-striped" id="tablita">
+                                  <thead>
+                                      <tr>
+                                          <th scope="col">ID</th>
+                                          <th scope="col">Fecha Venta</th>                  
+                                          <th scope="col">Cliente</th>
+                                          <th scope="col">Correo</th>
+                                          <th scope="col">Telefono</th>
+                                          <th scope="col">Total Venta</th>
+                                          <th scope="col">Total Abono</th>
+                                          <th scope="col">Total Pendiente</th>
+                                          <th scope="col">Forma de Pago</th>
+                                          <th scope="col">Comentario</th>
+                                          <th scope="col">Proxima Cita</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <tr *ngFor="let venta of Citas | paginate: 
+                                      {                   
+                                      itemsPerPage: tableSize,
+                                      currentPage: page,
+                                      totalItems: count
+                                      }; 
+                                      let iControl=index"
+                                      >
+                                          <td scope="row">{{ venta.idventa }}</td>
+                                          <td>{{ venta.fechaventa | date:'dd/MM/yyyy' }}</td>
+                                          <td>{{ venta.nombrecliente }}</td>
+                                          <td>{{ venta.correo }}</td>
+                                          <td>{{ venta.telefono }}</td>
+                                          <td class="text-end">{{ venta.totalventa }}</td>
+                                          <td class="text-end">{{ venta.totalabono }}</td>
+                                          <td class="text-end">{{ venta.totalpendiente }}</td>
+                                          <td class="text-end">{{ venta.formadepago }}</td>
+                                          <td class="text-end">{{ venta.comentario }}</td>  
+                                          <td class="text-end">{{ venta.proximacita | date:'dd/MM/yyyy' }}</td>                
+                                      </tr>
+                                  </tbody>
+                              </table>
+                              <div class="d-flex justify-content-center">
+                                <pagination-controls
+                                  previousLabel="Prev"
+                                  nextLabel="Next"
+                                  (pageChange)="onTableDataChange($event)"
+                                >
+                                </pagination-controls>
+                                <div class="d-flex justify-content-center">
+                                </div>
+                              </div>
+                            </div>                          
+                        </div>
+
+
+                    <div class="row justify-content-center">
+                        <div class="col-sm-6 text-center mb-4">
+                            <h4>Ganancia</h4>
+                                <div id="divGrafico2"><canvas id="Grafico2"></canvas></div>
+                        </div>
+                        <div class="col-sm-6 text-center mb-4">
+                            <h4>Ventas por Día</h4>
+                                <div id="divGrafico1"><canvas id="Grafico1"></canvas></div>
+                        </div>
+
+                        <div class="col-sm-6 text-center mb-4">
+                            <h4>Ventas Clasificación</h4>
+                                <div id="divGrafico3"><canvas id="Grafico3"></canvas></div>
+                        </div>
+                        <div class="col-sm-6 text-center mb-4">
+                            <h4>Ventas por Marca</h4>
+                                <div id="divGrafico4"><canvas id="Grafico4"></canvas></div>
+                        </div>
+
+                        <div class="col-sm-12 text-center mb-4">
+                            <h4>Ventas por Cliente</h4>
+                                <div id="divGrafico5"><canvas id="Grafico5"></canvas></div>
+                        </div>                        
+                    </div>
+
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

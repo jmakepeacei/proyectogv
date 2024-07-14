@@ -1,0 +1,170 @@
+<div class="card border-0">
+  <div class="card-header" style="background-color: #ffffff;">     
+      <h2 class="text-muted text-center">Detalle de Facturas</h2>
+    </div>
+  
+  <div class="container">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-sm-8">
+  
+      
+  <form ngNativeValidate [formGroup]="formularioDeSatsd" (ngSubmit)="enviarDatos2(1)">
+        <div class="position-sticky pt-3">
+            <input type="hidden" class="form-control" formControlName="idsat" placeholder="No." aria-label="No.">
+        <div class="row g-3 px-3 pt-3">
+          <div class="col-sm-3">
+            <label class="py-1">Fecha Factura</label>
+            <input type="date" class="form-control" formControlName="fechafactura" placeholder="Fecha Fac" aria-label="Fecha" required>
+          </div>
+          <div class="col-sm-4">
+            <label class="py-1">Serie</label>
+            <input type="text" class="form-control" formControlName="seriefactura" placeholder="Serie Fac" aria-label="Serie" required>
+          </div>
+          <div class="col-sm-5">
+            <label class="py-1">Nit</label>
+            <input type="text" class="form-control" formControlName="nitcliente" placeholder="Nit" aria-label="Nit" required>
+          </div>
+        </div>
+  
+        <div class="row g-3 px-3 pt-3">
+          <div class="col-sm-9">
+            <label class="py-1">Cliente</label>
+            <input type="text" class="form-control" formControlName="nombrecliente" placeholder="Nombre del Cliente" aria-label="Cliente" required>
+          </div>
+          <div class="col-sm-3">
+            <label class="py-1">Monto</label>
+            <input type="number" class="form-control text-end" formControlName="montofactura" placeholder="Monto" aria-label="Monto" step="0.01" required>
+          </div>
+        </div>
+    </div>
+  
+    <div class="row g-3 px-5 pt-3 mb-3 justify-content-center">
+      <div class="col-sm-3">
+        <button type="submit" class="btn btn-primary shadow"><i class="fas fa-save"></i> Agregar</button>
+      </div>
+      <div class="col-sm-3">
+        <button type="button" routerLink="/sat/" class="btn btn-danger shadow"><i class="fas fa-power-off"></i> Cancelar</button>
+      </div>
+    </div>
+  
+      </form>  
+      </div>
+    </div>
+  </div>
+  </div>
+  
+  <div class="card-body">
+        
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Id Sat</th>
+                    <th scope="col">Fecha Factura</th>
+                    <th scope="col">Serie</th>
+                    <th scope="col">Nit Cliente</th>
+                    <th scope="col">Nombre Cliente</th>
+                    <th scope="col">Monto Factura</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let sat of Satsd | paginate: 
+                {                   
+                itemsPerPage: tableSize,
+                currentPage: page,
+                totalItems: count
+                }; 
+                let iControl=index"
+              >
+                    <td scope="row">{{ sat.idsatd }}</td>
+                    <td>{{ sat.idsat }}</td>
+                    <td>{{ sat.fechafactura | date: "dd/MM/yyy" }}</td>
+                    <td>{{ sat.seriefactura }}</td>
+                    <td>{{ sat.nitcliente }}</td>
+                    <td>{{ sat.nombrecliente }}</td>
+                    <td class="text-end">{{ sat.montofactura }}</td>
+                    <td>
+                        <a class="btn btn-danger btn-sm" (click)="EliminarRegistro(sat.idsatd,iControl)" role="button">Eliminar</a>
+                        <!--<a class="btn btn-danger" (click)="borrarRegistro(empleado.id,iControl)" role="button">Borrar</a>-->
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr><td class="text-end" colspan="7">{{total | number : '1.2-2'}}</td><td></td></tr>
+            </tfoot>
+        </table>
+        <div class="d-flex justify-content-center">
+          <pagination-controls
+            previousLabel="Prev"
+            nextLabel="Next"
+            (pageChange)="onTableDataChange($event)"
+          >
+          </pagination-controls>
+        </div>
+    </div>
+    
+  </div>
+  
+
+
+
+  <div class="container">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-sm-8">
+  
+      
+  <form ngNativeValidate [formGroup]="formularioDeSats" (ngSubmit)="enviarDatos(1)">
+        <div class="position-sticky pt-3">
+            <div class="row px-2 pt-3 justify-content-end">
+                <div class="col-sm-2">
+                  <input type="text" class="form-control" formControlName="idsat" placeholder="No." aria-label="No.">
+                </div>
+            </div>
+        <div class="row g-3 px-3 pt-3">
+          <div class="col-sm-3">
+            <label class="py-1">Fecha Ingreso</label>
+            <input type="date" class="form-control" formControlName="fechaingreso" placeholder="Fecha de Ingreso" aria-label="FechaIngr" required>
+          </div>
+          <div class="col-sm-4">
+            <label class="py-1"># Formulario</label>
+            <input type="text" class="form-control" formControlName="formulario" id="colFormLabelSm" placeholder="Formulario">
+          </div>
+          <div class="col-sm-5">
+            <label class="py-1"># Acceso</label>
+            <input type="text" class="form-control" formControlName="numeroacceso" placeholder="No. Acceso" aria-label="Acceso">
+          </div>
+          <div class="col-sm-4">
+            <label class="py-1">Total</label>
+            <input type="number" class="form-control text-end" formControlName="totalformulario" placeholder="Total" aria-label="Total" step="0.01">
+          </div>
+          <div class="col-sm-4">
+            <label class="py-1">Monto IVA</label>
+            <input type="number" class="form-control text-end" formControlName="monto" placeholder="Monto Iva" aria-label="Iva" step="0.01">
+          </div>
+        </div>
+    </div>
+  
+    <div class="row g-3 px-5 pt-3 mb-3 justify-content-center">
+      <div class="col-sm-3">
+        <button type="submit" class="btn btn-primary shadow"><i class="fas fa-save"></i> Actualizar</button>
+      </div>
+      <div class="col-sm-3">
+        <button type="button" routerLink="/sat/" class="btn btn-danger shadow"><i class="fas fa-power-off"></i> Salir</button>
+      </div>
+    </div>
+  
+      </form>  
+      </div>
+    </div>
+  </div>
+  </div>
+  
+
+</div>
+  
+  
+  

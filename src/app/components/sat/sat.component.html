@@ -1,0 +1,108 @@
+<div class="card border-0">
+  <div class="card-header" style="background-color: #ffffff;">     
+    <h1 class="text-muted text-center">Facturas </h1>
+  </div>
+
+<div class="container">
+  <div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-sm-8">
+    
+      <form ngNativeValidate [formGroup]="formularioDeSats" (ngSubmit)="enviarDatos(1)">
+            <div class="position-sticky pt-3">
+
+            <div class="row g-3 px-3 pt-3">
+              <div class="col-sm-3">
+                <label class="py-1">Fecha Ingreso</label>
+                <input type="date" class="form-control" formControlName="fechaingreso" placeholder="Fecha de Ingreso" aria-label="FechaIngr" required>
+              </div>
+              <div class="col-sm-4">
+                <label class="py-1"># Formulario</label>
+                <input type="text" class="form-control" formControlName="formulario" id="colFormLabelSm" placeholder="Formulario">
+              </div>
+              <div class="col-sm-5">
+                <label class="py-1"># Acceso</label>
+                <input type="text" class="form-control" formControlName="numeroacceso" placeholder="No. Acceso" aria-label="Acceso">
+              </div>
+              <div class="col-sm-4">
+                <label class="py-1">Total</label>
+                <input type="number" class="form-control" formControlName="totalformulario" placeholder="Total" aria-label="Total" step="0.01">
+              </div>
+              <div class="col-sm-2">
+                <label class="py-1">Monto IVA</label>
+                <input type="number" class="form-control" formControlName="monto" placeholder="Monto Iva" aria-label="Iva" step="0.01">
+              </div>
+            </div>
+        </div>
+
+        <div class="row g-3 px-5 pt-3 mb-3 justify-content-center">
+          <div class="col-sm-3">
+            <button type="submit" class="btn btn-primary shadow"><i class="fas fa-save"></i> Nuevo</button>
+          </div>
+        </div>
+
+    </form>  
+  </div>
+  </div>
+</div>
+</div>
+
+<div class="card-body">
+  <div class="row">
+    <div class="col-sm-12 text-end">
+     <button (click)="DescargarAExcel()" class="btn btn-success"><i class="fas fa-download"></i> Descargar</button> 
+    </div>
+  </div> 
+  <div class="table-responsive">
+      <table class="table table-striped">
+          <thead>
+              <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Fecha Ingreso</th>
+                  <th scope="col"># Formulario</th>
+                  <th scope="col"># Acceso</th>
+                  <th scope="col">Total Formulario</th>
+                  <th scope="col">Monto IVA</th>
+                  <th scope="col">Acciones</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let sat of Sats | paginate: 
+              {                   
+              itemsPerPage: tableSize,
+              currentPage: page,
+              totalItems: count
+              }; 
+              let iControl=index"
+            >
+                  <td scope="row">{{ sat.idsat }}</td>
+                  <td>{{ sat.fechaingreso | date: "dd/MM/yyy" }}</td>
+                  <td>{{ sat.formulario }}</td>
+                  <td>{{ sat.numeroacceso }}</td>
+                  <td class="text-end">{{ sat.totalformulario }}</td>
+                  <td class="text-end">{{ sat.monto }}</td>
+                  <td>
+                      <a class="btn btn-primary btn-sm" routerLink="/satd/{{ sat.idsat }}">Detalles</a>
+                      <!--<a class="btn btn-danger" (click)="borrarRegistro(empleado.id,iControl)" role="button">Borrar</a>-->
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+      <div class="d-flex justify-content-center">
+        <pagination-controls
+          previousLabel="Prev"
+          nextLabel="Next"
+          (pageChange)="onTableDataChange($event)"
+        >
+        </pagination-controls>
+      </div>
+  </div>
+  
+</div>
+<div class="card-footer text-muted">
+  Footer
+</div>
+</div>
+
+
+

@@ -1,0 +1,353 @@
+
+<div class="card border-0">
+  <div class="card-header" style="background-color: #ffffff;">      
+      <h3 class="text-muted text-center">Detalle de Ventas </h3>
+    </div>
+  
+  <div class="container">
+    <div class="container-fluid">
+    <div class="row g-0">
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse">      
+        <div class="position-sticky pt-3">
+  
+        <form ngNativeValidate [formGroup]="formularioDeDVentas" (ngSubmit)="enviarDatos2(1)">
+        <div class="row g-1 px-3 pt-3">
+          <label>Infomación del Producto</label>
+          <input type="hidden" class="form-control" formControlName="idventa" placeholder="No." aria-label="No.">
+          <div class="col-sm-6">
+            <label class="py-1">Codigo</label>
+            
+            <!--<select class="form-select form-select" name="" id="" formControlName="idingreso" (change)="ObtenerDatos($event)" required>  
+              <option selected>Seleccione Codigo</option>            
+              <option *ngFor="let ingreso of Ingresos let iControl=index" value="{{ ingreso.idingreso }}">{{ ingreso.codigo }}</option>                       
+            </select>-->
+            <ng-select class="custom"
+                bindLabel="ingresos"
+                bindValue="idingreso"
+                placeholder="Seleccione Codigo" 
+                formControlName="idingreso"
+                (change)="ObtenerDatos($event)"
+                >
+              <ng-option *ngFor="let ingreso of Ingresos" [value]="ingreso.idingreso">{{ingreso.codigo+'-'+ingreso.idclasificacion}}</ng-option>
+              </ng-select>
+          </div>
+
+          <div class="col-sm-5">
+            <label class="py-1">Comentario</label>
+            <input required type="text" class="form-control"  formControlName="comentario" placeholder="Comentario">
+          </div>
+
+          <div class="col-sm-1">
+            <label class="py-1">Existencia</label>
+            <input type="text" class="form-control"  name="xexistencia" placeholder="Existencia" value="{{ existencia }}">
+          </div>
+
+          <div class="col-sm-7">
+            <label class="py-1">Clasificacion</label>
+            <input type="text" class="form-control" name="xclasificacion" placeholder="Clasificacion" value="{{ clasificacion }}">
+          </div>
+          <div class="col-sm-5">
+            <label class="py-1">Marca</label>
+            <input type="text" class="form-control" name="xmarca" placeholder="Marca" aria-label="Marca"  value="{{ marca }}">
+          </div>
+          <div class="col-sm-2">
+            <label class="py-1">Cantidad</label>
+            <input required type="number" class="form-control text-end" formControlName="cantidad" placeholder="Cant." aria-label="Cantidad" step="1" (change)="RecalcularTotales($event)">
+          </div>        
+          <div class="col-sm-2">
+            <label class="py-1">Precio</label>
+            <input required type="number" class="form-control text-end" formControlName="costopublico" placeholder="Costo Public" aria-label="CostPublic" step="0.01" (change)="RecalcularTotales($event)">
+          </div>
+          <div class="col-sm-2">
+            <label class="py-1">% Desc</label>
+            <input required type="number" class="form-control text-end" formControlName="pordescuento" placeholder="Descuento" aria-label="Descuento" step="1" (change)="RecalcularTotales($event)">
+          </div>
+          <div class="col-sm-3">
+            <label class="py-1">Monto Descuento</label>
+            <input required type="number" class="form-control text-end" formControlName="montodescuento" placeholder="Mont Descuento" aria-label="Mont Desc" step="0.01" (change)="RecalcularTotales2($event)">
+          </div>
+          <div class="col-sm-3">
+            <label class="py-1">Total</label>
+            <input required type="number" class="form-control text-end" formControlName="total" placeholder="SumaTotal" aria-label="Suma Total" step="0.01">
+          </div>
+        </div>
+  
+    <div class="row g-3 px-5 pt-3 mb-3 justify-content-center">
+      <div class="col-sm-3">
+        <button type="submit" class="btn btn-primary shadow"><i class="fas fa-save"></i> Agregar</button>
+      </div>
+      <div class="col-sm-3">
+        <button type="button" routerLink="/ventas/" class="btn btn-danger shadow"><i class="fas fa-power-off"></i> Cancelar</button>
+      </div>
+    </div>
+
+  </form>
+  </div>
+
+
+          
+      </nav>
+    </div>
+  </div>
+  </div>
+  
+  
+  <div class="card-body">
+        
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">IdVenta</th>
+                    <th scope="col">IdIngreso</th>
+                    <th scope="col">Codigo</th>
+                    <th scope="col">Comentario</th>
+                    <th scope="col">Clasificacion</th>
+                    <th scope="col">Marca</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">% Descuento</th>
+                    <th scope="col">Monto Descuento</th>
+                    <th scope="col">Total</th>                    
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ventad of Ventasd | paginate: 
+              {                   
+              itemsPerPage: tableSize,
+              currentPage: page,
+              totalItems: count
+              }; 
+              let iControl=index"
+              >
+                    <td scope="row">{{ ventad.idventad }}</td>                    
+                    <td>{{ ventad.idventa }}</td>
+                    <td>{{ ventad.idingreso }}</td>
+                    <td>{{ ventad.codigo }}</td>
+                    <td class="text-start">{{ ventad.comentario }}</td>
+                    <td>{{ ventad.nombreclasificacion }}</td>
+                    <td>{{ ventad.nombremarca }}</td>
+                    <td class="text-end">{{ ventad.cantidad }}</td>
+                    <td class="text-end">{{ ventad.costopublico }}</td>
+                    <td class="text-end">{{ ventad.pordescuento }}</td>
+                    <td class="text-end">{{ ventad.montodescuento }}</td>
+                    <td class="text-end">{{ ventad.total }}</td>
+                    <td>
+                         <!--<a class="btn btn-primary btn-sm" routerLink="/sats/{{ sat.idsat }}">Editar</a> | -->
+                        <a class="btn btn-danger btn-sm" (click)="EliminarRegistro(ventad.idventad,iControl,ventad.idingreso,ventad.cantidad)" role="button">Eliminar</a>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr><td class="text-end" colspan="12">{{total | number : '1.2-2'}}</td><td></td></tr>
+            </tfoot>
+        </table>
+        <div class="d-flex justify-content-center">
+          <pagination-controls
+            previousLabel="Prev"
+            nextLabel="Next"
+            (pageChange)="onTableDataChange($event)"
+          >
+          </pagination-controls>
+        <div class="d-flex justify-content-center">
+        </div>
+    </div>
+    
+  </div>
+  <div class="card-footer text-muted">
+    Footer
+  </div>
+
+
+  <div class="container pt-3">
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-8 col-lg-8">
+          <form ngNativeValidate [formGroup]="formularioDeVentas" (ngSubmit)="enviarDatos(1)">
+              <div class="row px-3 justify-content-end">
+                <div class="col-sm-2">
+                  <input type="text" class="form-control" formControlName="idventa" placeholder="No." aria-label="No.">
+                </div>
+              </div>
+              
+              <div class="row px-3 pt-3">
+                <label>Infomación del Cliente</label>
+                <div class="col-sm-3">  
+                  <label class="py-1">Fecha</label>        
+                  <input required type="date" class="form-control" formControlName="fechaventa" placeholder="Fecha">
+                </div>
+                <div class="col-sm-9">
+                  <label class="py-1">Cliente</label>
+                  <select class="form-select form-select" name="" id="" formControlName="idcliente" required>  
+                    <option selected>Selecciona Cliente</option>            
+                    <option *ngFor="let cliente of Clientes let iControl=index" value="{{ cliente.idcliente }}">{{ cliente.nombrecliente }}</option>                       
+                  </select>
+                </div>                              
+              </div>
+
+              <div class="row mb-3 px-3 pt-1">
+                <label>Infomación del Pago</label>                  
+                  <div class="col-sm-4">
+                    <label class="py-1">Total Venta</label>
+                    <input type="number" class="form-control text-end" formControlName="totalventa" placeholder="Total de Venta" aria-label="Total Venta" step="0.01">
+                  </div>          
+                  <div class="col-sm-4">
+                    <label class="py-1">Abono</label>
+                    <input type="number" class="form-control text-end" formControlName="totalabono" placeholder="Pendiente de Pago" aria-label="Abono" step="0.01" (change)="RecalcularPendienteDePago($event)">
+                  </div>           
+                  <div class="col-sm-4">
+                    <label class="py-1">Pendiente de Pago</label>
+                    <input type="number" class="form-control text-end" formControlName="totalpendiente" placeholder="Pendiente de Pago" aria-label="Pendiente de Pago" step="0.01">
+                  </div>          
+              </div>
+
+              <div class="row">
+                    <label class="py-1">Forma de Pago</label>
+                    <div class="row px-5">
+                      <div class="col-sm-3">
+                        
+                        <input class="form-check-input" formControlName="formadepago" type="radio" name="formadepago" id="flexRadioDefault1">
+                        <label class="form-check-label" for="flexRadioDefault1"> TC</label>
+                      </div>
+                      <div class="col-sm-3">              
+                        <input class="form-check-input" formControlName="formadepago" type="radio" name="formadepago" id="flexRadioDefault2">
+                        <label class="form-check-label" for="flexRadioDefault2"> EF</label>
+                      </div>
+                      <div class="col-sm-3">              
+                        <input class="form-check-input" formControlName="formadepago" type="radio" name="formadepago" id="flexRadioDefault3">
+                        <label class="form-check-label" for="flexRadioDefault3"> BI</label>
+                      </div>
+                      <div class="col-sm-3">              
+                        <input class="form-check-input" formControlName="formadepago" type="radio" name="formadepago" id="flexRadioDefault4">
+                        <label class="form-check-label" for="flexRadioDefault4"> Otros</label>
+                      </div>
+                  </div>
+              </div>
+
+            <div class="row mb-1 pt-2 px-3">
+              
+              <div class="col-sm-9">
+                <label class="py-1">Comentario</label>
+                <input type="text" class="form-control" formControlName="comentario" id="colFormLabelSm" placeholder="Informacion importante">
+              </div>                
+              <div class="col-sm-3">                        
+                <label class="py-1">Proxima Cita</label>
+                <input type="date" formControlName="proximacita" class="form-control">
+              </div> 
+            </div>
+
+            <div class="row pt-2 mb-3 justify-content-center">
+              <div class="col-sm-3">
+                <button type="submit" class="btn btn-primary shadow"><i class="fas fa-save"></i> Actualizar</button>
+              </div>
+              <div class="col-sm-3">
+                <button type="button" routerLink="/ventas/" class="btn btn-danger shadow"><i class="fas fa-power-off"></i> Salir</button>
+              </div>          
+            </div>
+
+            <div id="htmlData" #pdfTable class="table-responsive card p-2">
+              <h3>Recibo</h3>
+              <table class="table">
+                <tr>
+                  <td>
+                    <label>Correlativo No.:</label>
+                  </td>
+                  <td>                    
+                    <input type="text" class="form-control border-0" formControlName="idventa">
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label>Fecha:</label>
+                  </td>
+                  <td>
+                    <input required type="date" class="form-control border-0" formControlName="fechaventa">
+                  </td>
+                </tr>
+                <tr>
+                  <td> 
+                    <label>Cliente:</label>
+                  </td>
+                  <td>
+                    <select class="form-select form-select border-0" name="" id="" formControlName="idcliente" required>  
+                      <option selected>Selecciona Cliente</option>            
+                      <option *ngFor="let cliente of Clientes let iControl=index" value="{{ cliente.idcliente }}">{{ cliente.nombrecliente }}</option>                       
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label>Total Venta:</label>                    
+                  </td>          
+                  <td>
+                    <label>Abono:</label>                    
+                  </td>           
+                  <td>
+                    <label>Pendiente de Pago:</label>                    
+                  </td> 
+                </tr>
+                <tr>
+                  <td>                    
+                    <input type="number" class="form-control text-end" formControlName="totalventa" step="0.01">
+                  </td>          
+                  <td>                  
+                    <input type="number" class="form-control text-end" formControlName="totalabono" step="0.01">
+                  </td>           
+                  <td>
+                    <input type="number" class="form-control text-end" formControlName="totalpendiente" step="0.01">
+                  </td> 
+                </tr>                
+                <tr>
+                  <td colspan="2">
+                    <label>Comentario:</label>   
+                  </td>           
+                  <td>
+                    <label>Proxima Cita:</label>  
+                  </td>            
+                </tr>    
+                <tr>
+                  <td colspan="2">                 
+                    <input type="text" class="form-control" formControlName="comentario">   
+                  </td>                      
+                  <td>                                      
+                    <input type="date" class="form-control border-0 fw-bold text-danger text-center" formControlName="proximacita">   
+                  </td>                   
+                </tr>            
+              </table>
+              <table class="table">
+                  <thead>
+                      <tr>
+                          <th>Comentario</th>
+                          <th>Cantidad</th>
+                          <th>Precio</th>
+                          <th>Descuento</th>
+                          <th>Total</th>                    
+                      </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let ventad of Ventasd  
+                    let iControl=index">
+                          <td class="text-start">{{ ventad.comentario }}</td>
+                          <td class="text-end">{{ ventad.cantidad }}</td>
+                          <td class="text-end">{{ ventad.costopublico }}</td>
+                          <td class="text-end">{{ ventad.montodescuento }}</td>
+                          <td class="text-end">{{ ventad.total }}</td>
+                      </tr>
+                  </tbody>
+                  <tfoot>
+                      <tr><td></td><td></td><td></td><td></td><td class="text-end">{{total | number : '1.2-2'}}</td></tr>
+                  </tfoot>
+              </table>
+            </div>
+            <div class="col-sm-12 pt-3">
+              <button type="button" class="btn btn-primary shadow" (click)="openPDF();"><i class="fas fa-file-invoice"></i> Recibo</button>
+            </div>
+            </form>
+        </div>
+      </div>
+  </div>
+</div>
+
+  </div>

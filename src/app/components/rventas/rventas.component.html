@@ -1,0 +1,115 @@
+
+<div class="card border-0">
+  <div class="card-header" style="background-color: #ffffff;">      
+      <h1 class="text-muted text-center">Ventas </h1>
+    </div>
+
+    <form ngNativeValidate [formGroup]="formularioFiltroVentas" (ngSubmit)="enviarDatos()">
+        <div class="row justify-content-center align-items-center g-2 my-3">
+            <label class="text-center">Intervalo de ventas</label>
+            <div class="col-sm-3">  
+                <label class="py-1">Fecha Inicial</label>        
+                <input required type="date" class="form-control" formControlName="fechainicial" placeholder="Fecha de" >
+            </div>    
+            <div class="col-sm-3">  
+                <label class="py-1">Fecha Final</label>        
+                <input required type="date" class="form-control" formControlName="fechafinal" placeholder="Fecha a">
+            </div>                                             
+        </div>
+
+        <div class="row justify-content-center align-items-center pt-1 mb-3 ">
+            <div class="col-sm-6 text-center">
+            <button type="submit" class="btn btn-primary shadow"><i class="fas fa-save"></i> Filtrar</button>
+            </div>        
+        </div>
+    </form>
+   
+  <div class="card-body">
+    <div class="row">
+      <div class="col-sm-12 text-end">
+       <button (click)="DescargarAExcel()" class="btn btn-success"><i class="fas fa-download"></i> Descargar</button> 
+      </div>
+    </div> 
+    <div class="table-responsive">
+        <table class="table table-striped" id="tablita">
+            <thead>
+                <tr>
+                    <th scope="col">Id Venta</th>
+                    <th scope="col">Fecha Venta</th>                  
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Total Venta</th>
+                    <th scope="col">Total Abono</th>
+                    <th scope="col">Total Pendiente</th>
+                    <th scope="col">Forma de Pago</th>
+                    <th scope="col">Comentario Venta</th>
+                    <th scope="col">Proxima Cita</th>
+                    <th scope="col">Id VentaD</th>
+                    <th scope="col">Id Ingreso</th>
+                    <th scope="col">Codigo</th>
+                    <th scope="col">Comentario Detalle</th>
+                    <th scope="col">IdClasificacion</th>
+                    <th scope="col">Nombre Clasificacion</th>
+                    <th scope="col">Id Marca</th>
+                    <th scope="col">Nombre Marca</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Costo Publico</th>
+                    <th scope="col">% Descuento</th>
+                    <th scope="col">Monto Descuento</th>
+                    <th scope="col">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let venta of Ventas | paginate: 
+                {                   
+                itemsPerPage: tableSize,
+                currentPage: page,
+                totalItems: count
+                }; 
+                let iControl=index"
+                >
+                    <td scope="row">{{ venta.idventa }}</td>
+                    <td>{{ venta.fechaventa | date: "dd/MM/yyy" }}</td>
+                    <td>{{ venta.nombrecliente }}</td>
+                    <td class="text-end">{{ venta.totalventa }}</td>
+                    <td class="text-end">{{ venta.totalabono }}</td>
+                    <td class="text-end">{{ venta.totalpendiente }}</td>
+                    <td class="text-end">{{ venta.formadepago }}</td>
+                    <td class="text-end">{{ venta.vcomentario }}</td>  
+                    <td class="text-end">{{ venta.proximacita | date: "dd/MM/yyy" }}</td>               
+                    <td class="text-end">{{ venta.idventad }}</td>
+                    <td class="text-end">{{ venta.idingreso }}</td>     
+                    <td class="text-end">{{ venta.codigo }}</td>     
+                    <td class="text-end">{{ venta.dcomentario }}</td>     
+                    <td class="text-end">{{ venta.idclasificacion }}</td>     
+                    <td class="text-end">{{ venta.nombreclasificacion }}</td>     
+                    <td class="text-end">{{ venta.idmarca }}</td>     
+                    <td class="text-end">{{ venta.nombremarca }}</td>     
+                    <td class="text-end">{{ venta.cantidad }}</td>     
+                    <td class="text-end">{{ venta.costopublico }}</td>           
+                    <td class="text-end">{{ venta.pordescuento }}</td>
+                    <td class="text-end">{{ venta.montodescuento }}</td>
+                    <td class="text-end">{{ venta.total }}</td>
+                    <td>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-center">
+          <pagination-controls
+            previousLabel="Prev"
+            nextLabel="Next"
+            (pageChange)="onTableDataChange($event)"
+          >
+          </pagination-controls>
+        <div class="d-flex justify-content-center">
+        </div>
+    </div>
+    
+  </div>
+  <div class="card-footer text-muted">
+    Footer
+  </div>
+  </div>
+  
+  
+  

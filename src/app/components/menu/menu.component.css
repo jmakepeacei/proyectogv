@@ -1,0 +1,12 @@
+.sidebar .nav-link{
+  
+  color: rgb(119, 112, 112);
+}
+
+.sidebar .nav-link.active {
+  color: #272626;
+}
+
+.button .btn-outline-light{
+  color: rgb(20, 20, 20);
+}

@@ -1,0 +1,142 @@
+<div class="card border-0">
+  <div class="card-header" style="background-color: #ffffff;">  
+    <h1 class="text-muted text-center">Clientes </h1>
+  </div>
+
+<div class="container">
+  <div class="container-fluid">
+  <div class="row">
+
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+      
+      <form ngNativeValidate [formGroup]="formularioDeClientes" (ngSubmit)="enviarDatos(1)">
+    <div class="row px-2 pt-3 justify-content-end">
+        <div class="col-sm-2">
+          <input type="text" class="form-control" placeholder="No." formControlName="idcliente" aria-label="No.">
+        </div>
+    </div>
+
+    <div class="row px-2">
+      <label class="py-2">Información del Cliente</label>
+        <div class="col-sm-4">
+          <label class="py-1">Nombre</label>
+          <input required type="text" class="form-control" formControlName="nombrecliente" id=""placeholder="Nombre Cliente" aria-label="Nombre Cliente">
+        </div>
+        <div class="col-sm-4">
+          <label class="py-1">Nit</label>
+          <input required type="text" class="form-control" formControlName="nit" id="" placeholder="Nit" aria-label="Nit">
+        </div>
+        <div class="col-sm-4">
+          <label class="py-1">Telefono</label>
+          <input required type="text" class="form-control" formControlName="telefono" id="" placeholder="Telefono">
+        </div>    
+        <div class="col-sm-12">
+          <label class="py-1">Direccion</label>
+          <input required type="text" class="form-control" formControlName="direccion" id="" placeholder="Direccion">
+        </div>      
+        <div class="col-sm-6">
+          <label class="py-1">Correo</label>
+          <input required type="email" class="form-control" formControlName="correo" id="" placeholder="Email">
+        </div>
+        <div class="col-sm-6">
+          <label class="py-1">Fecha Nacimiento</label>
+          <input required type="date" class="form-control" formControlName="fechacumpleanios" id="" placeholder="Fecha Nacimiento" aria-label="FechaNac">
+        </div>        
+        <div class="col-sm-12">
+          <label class="py-1">Comentario</label>
+          <input type="text" class="form-control" id="colFormLabelSm" placeholder="Informacion importante">
+        </div>        
+      </div>
+
+    <div class="row g-3 px-5 pt-1 mb-3 justify-content-center">
+      <div class="col-sm-3">
+        <button type="submit" class="btn btn-primary shadow"><i class="fas fa-save"></i> Guardar</button>
+      </div>
+      <div class="col-sm-3">
+        <button type="button" routerLink="/clientes/" class="btn btn-danger shadow"><i class="fas fa-power-off"></i> Cancelar</button>
+      </div>
+    </div>
+
+  </form>        
+    </nav>
+  </div>
+</div>
+</div>
+
+  <div class="card-body">
+    <div class="row">
+      <div class="col-sm-12 text-end">
+       <button (click)="DescargarAExcel()" class="btn btn-success"><i class="fas fa-download"></i> Descargar</button> 
+      </div>
+    </div> 
+    <div class="row pt-3">
+      <div class="col-sm-12">        
+            <label class="mb-2">Filtro de busqueda</label>
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1"><i class="fas fa-filter text-muted"></i></span>
+              <input
+                type="text"
+                class="form-control mb-0"
+                name="nombrecliente"
+                placeholder="Escriba el nombre del cliente..."
+                (input)="FiltrarDatos($event.target)"
+                aria-describedby="basic-addon1"
+              />
+            </div>                  
+      </div>
+    </div>
+      <div class="table-responsive">
+          <table class="table table-striped" id="tablita">
+              <thead>
+                  <tr>
+                      <th scope="col">ID</th>
+                      <th scope="col">Nombre Cliente</th>
+                      <th scope="col">Nit</th>
+                      <th scope="col">Telefono</th>
+                      <th scope="col">Direccion</th>
+                      <th scope="col">Correo</th>
+                      <th scope="col">Fecha Nacimiento</th>
+                      <th scope="col">Acciones</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let cliente of Clientes | paginate: 
+                  {                   
+                  itemsPerPage: tableSize,
+                  currentPage: page,
+                  totalItems: count
+                  }; 
+                  
+                  let iControl=index"
+                >
+                      <td scope="row">{{ cliente.idcliente }}</td>
+                      <td>{{ cliente.nombrecliente }}</td>
+                      <td>{{ cliente.nit }}</td>
+                      <td>{{ cliente.telefono }}</td>
+                      <td>{{ cliente.direccion }}</td>
+                      <td>{{ cliente.correo }}</td>
+                      <td>{{ cliente.fechacumpleanios | date: "dd/MM/yyy"}}</td>
+                      <td>
+                          <a class="btn btn-primary btn-sm" routerLink="/clientes/{{ cliente.idcliente }}">Editar</a> 
+                          <!--<a class="btn btn-danger" (click)="borrarRegistro(empleado.id,iControl)" role="button">Borrar</a>-->
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+          <div class="d-flex justify-content-center">
+            <pagination-controls
+              previousLabel="Prev"
+              nextLabel="Next"
+              (pageChange)="onTableDataChange($event)"
+            >
+            </pagination-controls>
+          </div>
+      </div>
+      
+  </div>
+  <div class="card-footer text-muted">
+      Footer
+  </div>
+</div>
+
+

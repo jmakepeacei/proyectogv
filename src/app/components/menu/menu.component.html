@@ -1,0 +1,43 @@
+
+<div class="container-fluid">
+  <div class="row ">
+
+    <nav id="sidebarMenu " class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse">
+      <div class="position-sticky pt-3">
+        <h2 class="ps-3 text-white">Menu</h2>
+        <ul class="nav nav-pills flex-column mb-auto">
+          <li class="nav-item">
+            <a type="button" class="nav-link btn btn-light-outline text-start text-white" [routerLink]="['dashboard']"><i class="fas fa-chart-area text-success"></i> Dashboard</a>
+          </li>
+
+          <li class="nav-item">
+            <a type="button" class="nav-link btn btn-light-outline text-start text-white" [routerLink]="['ventas']"><i class="fas fa-cart-plus text-success"></i> Ventas</a>
+          </li>
+
+          <li class="nav-item">
+            <a type="button" class="nav-link btn btn-light-outline text-start text-white" [routerLink]="['ingresos']"><i class="fas fa-shopping-cart text-success"></i> Inventario</a>
+          </li>
+
+          <li class="nav-item">
+            <a type="button" class="nav-link btn btn-light-outline text-start text-white" [routerLink]="['sat']"><i class="fas fa-handshake text-success"></i> Facturas</a>
+          </li>
+
+          <li class="nav-item">
+            <a type="button" class="nav-link btn btn-light-outline text-start text-white" [routerLink]="['clientes']"><i class="fas fa-user-friends text-success"></i> Clientes</a>
+          </li>
+
+          <li class="nav-item">
+            <a type="button" class="nav-link btn btn-light-outline text-start text-white" [routerLink]="['rventas']"><i class="fas fa-file text-success"></i> Reportes</a>
+          </li>
+
+        </ul>
+      </div>
+    </nav>
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-1 mb-5 mt-0">
+        <div class="container mb-3 overflow-auto" style="height: 765px;">
+          <router-outlet></router-outlet>
+        </div>
+    </main>
+  </div>
+</div>

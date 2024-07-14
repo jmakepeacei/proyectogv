@@ -1,0 +1,212 @@
+
+<div class="card border-0">
+  <div class="card-header" style="background-color: #ffffff;">      
+    <h1 class="text-muted text-center">Ventas </h1>
+  </div>
+
+<div class="container">
+  <div class="container-fluid">
+  <div class="row">
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse">      
+      <form ngNativeValidate [formGroup]="formularioDeVentas" (ngSubmit)="enviarDatos(1)">
+      <div class="position-sticky pt-3">
+
+        <div class="row px-3 justify-content-end">
+          <div class="col-sm-2">
+            <input type="text" class="form-control" placeholder="No." aria-label="No.">
+          </div>
+        </div>
+
+       <!--<div class="col-sm-4" id="state">
+          <ul class="nav flex-column px-3">
+            <li class="nav-item">
+              <select aria-label="State" class="form-select" style="color: #727475;">
+                <option selected>Tipo de Servicio</option>
+                <option value="1">Servicio</option>
+                <option value="2">Ropa</option>
+                <option value="3">Producto Salon</option>
+                <option value="4">Producto Belleza</option>
+                <option value="5">Otros</option>
+              </select>
+            </li>
+          </ul>
+        </div>-->
+
+      <div class="row g-1 px-3 pt-3">
+        <label>Infomación del Cliente</label>
+        <div class="col-sm-3">  
+          <label class="py-2">Fecha</label>        
+          <input required type="date" formControlName="fechaventa" class="form-control"  [ngModel] ="dt | date:'yyyy-MM-dd'"/>
+        </div>
+        <div class="col-sm-7">
+          <label class="py-2">Cliente</label>
+          <!--<select class="form-select form-select" name="" id="" formControlName="idcliente" required>  
+            <option selected>Selecciona Cliente</option>            
+            <option *ngFor="let cliente of Clientes let iControl=index" value="{{ cliente.idcliente }}">{{ cliente.nombrecliente }}</option>                       
+          </select>-->
+          <ng-select class="custom"
+            bindLabel="clientes"
+            placeholder="Seleccione Cliente" 
+            formControlName="idcliente"
+            appendTo="body"
+            >
+          <ng-option *ngFor="let cliente of Clientes" [value]="cliente.idcliente">{{cliente.nit+' '+cliente.nombrecliente}}</ng-option>
+          </ng-select>
+
+        </div>    
+        <div class="col-sm-1">
+          <label class="py-2">Nuevo</label>
+          <button type="button" class="btn btn-primary shadow" (click)="abrirModal(modalcliente)"><i class="fas fa-plus"></i></button>
+        </div>                          
+      </div>
+
+      <div class="row g-3 px-5 pt-3 mb-3 justify-content-center">
+        <div class="col-sm-3">
+          <button type="submit" class="btn btn-primary shadow"><i class="fas fa-save"></i> Nueva</button>
+        </div>
+      </div>  
+  </div>
+</form>
+    </nav>
+  </div>
+</div>
+</div>
+
+
+<div class="card-body">
+  <div class="row">
+    <div class="col-sm-12 text-end">
+     <button (click)="DescargarAExcel()" class="btn btn-success"><i class="fas fa-download"></i> Descargar</button> 
+    </div>
+  </div> 
+  <div class="row pt-3">
+    <div class="col-sm-12">        
+          <label class="mb-2">Filtro de busqueda</label>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1"><i class="fas fa-filter text-muted"></i></span>
+            <input
+              type="text"
+              class="form-control mb-0"
+              name="nombrecliente"
+              placeholder="Escriba el nombre del cliente..."
+              (input)="FiltrarDatos($event.target)"
+              aria-describedby="basic-addon1"
+            />
+          </div>                  
+    </div>
+  </div>  
+  <div class="table-responsive">
+      <table class="table table-striped" id="tablita">
+          <thead>
+              <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Fecha Venta</th>                  
+                  <th scope="col">Cliente</th>
+                  <th scope="col">Total Venta</th>
+                  <th scope="col">Total Abono</th>
+                  <th scope="col">Total Pendiente</th>
+                  <th scope="col">Forma de Pago</th>
+                  <th scope="col">Comentario</th>
+                  <th scope="col">Proxima Cita</th>
+                  <th scope="col">Acciones</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let venta of Ventas | paginate: 
+              {                   
+              itemsPerPage: tableSize,
+              currentPage: page,
+              totalItems: count
+              }; 
+              let iControl=index"
+              >
+                  <td scope="row">{{ venta.idventa }}</td>
+                  <td>{{ venta.fechaventa | date: "dd/MM/yyy" }}</td>
+                  <td>{{ venta.nombrecliente }}</td>
+                  <td class="text-end">{{ venta.totalventa }}</td>
+                  <td class="text-end">{{ venta.totalabono }}</td>
+                  <td class="text-end">{{ venta.totalpendiente }}</td>
+                  <td class="text-end">{{ venta.formadepago }}</td>
+                  <td class="text-end">{{ venta.comentario }}</td>  
+                  <td class="text-end">{{ venta.proximacita | date: "dd/MM/yyy" }}</td>                
+                  <td>
+                       <a class="btn btn-danger btn-sm" routerLink="/ventasd/{{ venta.idventa }}">Detalles</a>
+                      <!--<a class="btn btn-danger" (click)="borrarRegistro(empleado.id,iControl)" role="button">Borrar</a>-->
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+      <div class="d-flex justify-content-center">
+        <pagination-controls
+          previousLabel="Prev"
+          nextLabel="Next"
+          (pageChange)="onTableDataChange($event)"
+        >
+        </pagination-controls>
+      <div class="d-flex justify-content-center">
+      </div>
+  </div>
+  
+</div>
+<div class="card-footer text-muted">
+  Footer
+</div>
+</div>
+
+
+<ng-template #modalcliente>
+  <form ngNativeValidate [formGroup]="formularioDeClientes" (ngSubmit)="enviarDatos2(1)">
+    
+  <div class="modal-header">
+    <h5 class="modal-title">Nuevo Cliente</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modalRef?.hide()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="row px-2">
+      <label class="py-2">Información del Cliente</label>
+        <div class="col-sm-4">
+          <label class="py-1">Nombre</label>
+          <input required type="text" class="form-control" formControlName="nombrecliente" id=""placeholder="Nombre Cliente" aria-label="Nombre Cliente">
+        </div>
+        <div class="col-sm-4">
+          <label class="py-1">Nit</label>
+          <input required type="text" class="form-control" formControlName="nit" id="" placeholder="Nit" aria-label="Nit">
+        </div>
+        <div class="col-sm-4">
+          <label class="py-1">Telefono</label>
+          <input required type="text" class="form-control" formControlName="telefono" id="" placeholder="Telefono">
+        </div>    
+        <div class="col-sm-12">
+          <label class="py-1">Direccion</label>
+          <input required type="text" class="form-control" formControlName="direccion" id="" placeholder="Direccion">
+        </div>      
+        <div class="col-sm-6">
+          <label class="py-1">Correo</label>
+          <input required type="email" class="form-control" formControlName="correo" id="" placeholder="Email">
+        </div>
+        <div class="col-sm-6">
+          <label class="py-1">Fecha Nacimiento</label>
+          <input required type="date" class="form-control" formControlName="fechacumpleanios" id="" placeholder="Fecha Nacimiento" aria-label="FechaNac">
+        </div>        
+        <div class="col-sm-12">
+          <label class="py-1">Comentario</label>
+          <input type="text" class="form-control" id="colFormLabelSm" placeholder="Informacion importante">
+        </div>               
+      </div>
+
+    <div class="row g-3 px-5 pt-1 mb-3 justify-content-center">
+      <div class="col-sm-3">
+        <button type="submit" class="btn btn-primary shadow"><i class="fas fa-save"></i> Guardar</button>
+      </div>
+      <div class="col-sm-3">
+        <button type="button" data-bs-dismiss="modal" class="btn btn-danger shadow" aria-label="Close" (click)="modalRef?.hide()"><i class="fas fa-power-off"></i> Cancelar</button>
+      </div>
+    </div>
+  </div>
+</form>
+</ng-template>
+
+<script>
+  const input = document.querySelector('input');
+  input.valueAsDate = new Date();
+</script>
